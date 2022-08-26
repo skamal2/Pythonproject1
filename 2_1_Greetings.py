@@ -1,2 +1,2 @@
 user = input('Write your name:')
-print ("Hello," + user + "!" )
+print ("Hello, " + user + "!" )
