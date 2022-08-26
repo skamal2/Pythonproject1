@@ -1,0 +1,8 @@
+user1=input('Give a length of a rectangle:')
+user2=input('Give a width of a rectangle:')
+length=float(user1)
+width=float(user2)
+area=(length*width)
+perimeter=2*(length+width)
+print("Area of the rectangle is " + str(area) + ".")
+print("Perimeter of the rectangle is " + str(perimeter))
