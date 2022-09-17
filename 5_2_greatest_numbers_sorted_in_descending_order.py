@@ -1,8 +1,13 @@
 users = []
-user = input("Enter a number at least 5 times: \n")
+user=0
 while user != "" :
-    users.append(user)
-    users.sort(reverse = True)
+    user =(input("Enter a number at least 5 times: \n"))
+    if user != "":
+        user = int(user)
+        users.append(int(user))
 
-    user = input("Enter a number at least 5 times: \n")
+        users.sort(reverse = True)
+
+
 print(users)
+print("The greatest numbers are: ", users[0:6])

@@ -1,12 +1,11 @@
-gender = input("Give gender: \n").lower()
-hmb= float(input("Hmb level: \n"))
-if (gender == "male") and (hmb >167):
-    print("Your hmb is high")
-elif((gender == "female") and (hmb >155)):
-    print("Your hmb is high")
-elif(gender == "male") and (hmb <134):
-    print("Your hmb is low")
-elif((gender == "female") and (hmb <117)):
-    print("Your hmb is low")
-else:
-    print("normal")
+def inventory(items):
+    print("You have the following items:")
+    for item in items:
+        print ("- " + item)
+    return
+
+backpack = ["Water bottle", "Map", "Compass"]
+inventory(backpack)
+backpack.append("Swiss Army knife")
+inventory(backpack)
+inventory(backpack)
