@@ -14,6 +14,20 @@ while attempts<5:
 else:
     print("Access Denied!")
 
+   # i = 0
+    #while i < 5:
+
+        #username = input("enter user name: ")
+        #password = input("enter password")
+        #i = i + 1
+        #if username == "python" and password == "rules":
+        #    print("Welcome!")
+         #   break
+        #if username != "python" or password != "rules":
+         #   print("Wrong username or password.")
+    #else:
+     #   print("Access denied")
+
 
 #for _ in range(5):
         #username = input("Enter a user name! \n")
