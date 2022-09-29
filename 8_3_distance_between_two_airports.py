@@ -1,19 +1,17 @@
 import mysql.connector
+from geopy.distance import geodesic as GD
 
-def fetch_information(first_airport, second_airport):
-    names = set()
-    sql = "SELECT name, type, iso_country from airport"
-    sql += " WHERE iso_country='" + iso_country + "'"
+def fetch_information(ident):
+    sql = "SELECT  latitude_deg, longitude_deg from airport"
+    sql += " WHERE ident ='" + ident + "'"
     print(sql)
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
-    names.add(sql)
     if cursor.rowcount >0 :
+        for row in result:
 
-    distance=
-
-    return
+            return (row[0],row[1])
 
 # Main program
 connection = mysql.connector.connect(
@@ -24,7 +22,13 @@ connection = mysql.connector.connect(
          password='Villain',
          autocommit=True
          )
-i=0
-while i<1:
-    iso_country = input("Enter area code: ").upper()
-    iso_country = input("Enter area code: ").upper()
+
+
+ident = input("Enter first Icao code: ").upper()
+ident1 = input("Enter second Icao code: ").upper()
+
+m= fetch_information(ident)[0:2]
+n= fetch_information(ident1)[0:2]
+distance =GD(m,n).km
+
+print(f"The distance between the given airports is {distance:.2f}")

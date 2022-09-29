@@ -1,14 +1,12 @@
 import mysql.connector
 
 def fetch_information(iso_country):
-    names = set()
     sql = "SELECT name, type, iso_country from airport"
     sql += " WHERE iso_country='" + iso_country + "'"
     print(sql)
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
-    names.add(sql)
     if cursor.rowcount >0 :
 
         for row in result:
