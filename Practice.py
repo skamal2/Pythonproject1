@@ -1,6 +1,14 @@
-from geopy.distance import geodesic as GD
- # For the specified locations, load their latitude and longitude data.
-Abuja =( 40.07080078125 , -74.93360137939453)
-Dakar =(38.704022 , -101.473911)
-#Finally, print the distance between the two sites in kilometers.
-print("The distance between Abuja and Dakar is: ", GD(Abuja,Dakar).km)
+names ={"ram", "sam", "bam", "pam"}
+user=0
+while user!="":
+    user = input("Enter name: ")
+    if user in names:
+        print("Existing name.")
+    if user not in names:
+        names.add(user)
+        print("New name.")
+
+    if user=="":
+        break
+for i in (names):
+    print([i])

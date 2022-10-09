@@ -1,13 +1,10 @@
-users = []
-user=0
-while user != "" :
-    user =(input("Enter a number at least 5 times: \n"))
-    if user != "":
-        user = int(user)
-        users.append(int(user))
+import random
+users=int(input("Enter number: "))
 
-        users.sort(reverse = True)
-
-
-print(users)
-print("The greatest numbers are: ", users[0:6])
+while users!=29:
+    if users >= 1 and users <= 3:
+        print("prime")
+    users = int(input("Enter number: "))
+    r=random.randint(2,10)
+while users!=users and users%r==0:
+    print("composite")

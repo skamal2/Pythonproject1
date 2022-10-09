@@ -1,7 +1,7 @@
 import random
 
 def main():
-    r = random.randint(1, 6)
+    r = 0
 
     while r!=6:
         r = random.randint(1, 6)

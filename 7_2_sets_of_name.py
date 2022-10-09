@@ -1,4 +1,4 @@
-names = set()
+names = {"ram", "sam", "bam", "pam"}
 while True:
     name= input("Enter the name: ")
 
@@ -11,5 +11,5 @@ while True:
     else:
         print(f"The names are:")
         for i in names:
-            print(i)
+            print([i])
         break
