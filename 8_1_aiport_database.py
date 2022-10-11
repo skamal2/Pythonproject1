@@ -8,9 +8,14 @@ def fetch_information(ident):
     cursor.execute(sql)
     result = cursor.fetchall()
     if cursor.rowcount >0 :
+
         for row in result:
+
             print(f"The name of the airport is {row[0]} and it is located  in {row[1]}.")
+
+
     return
+
 
 # Main program
 connection = mysql.connector.connect(
@@ -23,4 +28,5 @@ connection = mysql.connector.connect(
          )
 
 ident = input("Enter ICAO code: ").upper()
+
 fetch_information(ident)

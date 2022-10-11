@@ -29,6 +29,56 @@ def fetch_information1(name):
 
             return (row[0])
 
+def fetch_information2(ident):
+    sql = "SELECT  latitude_deg from airport"
+    sql += " WHERE ident ='" + ident + "'"
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if cursor.rowcount >0 :
+
+        for row in result:
+
+            return (row[0])
+def fetch_information3(ident):
+    sql = "SELECT  longitude_deg from airport"
+    sql += " WHERE ident ='" + ident + "'"
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if cursor.rowcount >0 :
+        for row in result:
+
+            return (row[0])
+
+def fetch_information4(ident):
+    sql = "SELECT Name, Municipality, Ident FROM airport"
+    sql += " WHERE ident='" + ident + "'"
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if cursor.rowcount >0 :
+
+        for row in result:
+
+            print(f"The name of the airport is {row[0]} and it is located  in {row[1]}.")
+
+
+def fetch_information5(name):
+    sql = "SELECT Name, Municipality, Ident FROM airport"
+    sql += " WHERE name='" + name + "'"
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if cursor.rowcount >0 :
+
+        for row in result:
+
+            print(f"The name of the airport is {row[0]} and it is located  in {row[1]}.")
 
 # Main program
 connection = mysql.connector.connect(
@@ -65,29 +115,25 @@ print("Your goal is to reach all of the airports having given weather conditions
 #
 
 
-given_weather_condition=[10, 19, 20, 15,  "few clouds","broken clouds", "clear sky", "overcast clouds", "windy"]
-display_given_weather_condition=["10°C", "19°C", "20°C", "broken clouds", "few clouds", "clear sky", "scattered clouds", "overcast clouds"]
+given_weather_condition=[10, 15, 20,  "few clouds","broken clouds", "clear sky", ]
+display_given_weather_condition=["10°C", "15°C", "20°C",  "few clouds", "broken clouds","clear sky"]
 r=random.sample(display_given_weather_condition,6)
 # rounded temp_celcius could not be read as string
 
 print(r)
 Available_Co2_in_kg = 6000
-airport = input("Enter the name of the airport: ").lower()
+airport = input("Enter the name of the airport or ICAO code: ").lower()
+fetch_information4(airport)
+fetch_information5(airport)
 
-lat= fetch_information(airport)
-lon=fetch_information1(airport)
+
+lat= fetch_information(airport) or fetch_information2(airport)
+lon=fetch_information1(airport) or fetch_information3(airport)
 
 
-def kelvin_fahrenheit_to_celcius(kelvin):
-    celcius = kelvin - 273.15
-    fahrenheit = celcius*(9/5) + 32
-    return celcius, fahrenheit
+
 url = "https://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid=f1c5c2efcc1463620cfe351cb7b40f30&units=metric".format(lat,lon)
 response = requests.get(url).json()
-
-print(response)
-
-
 
 temp_celcius = response["main"]["temp"]
 
@@ -98,14 +144,14 @@ temp_celcius = round(temp_celcius)
 feels_like_celcius= round(feels_like_celcius)
 
 description = response["weather"][0]["description"]
+
 humidity = response["main"]["humidity"]
 wind = response["wind"]["speed"]
 
-print(response)
 
-if wind>=8.9:
+if wind>=9.69:
      hawa = str("windy")
-if wind<8.9:
+if wind<9.69:
      hawa = str(" not windy")
 
 if temp_celcius in given_weather_condition:
@@ -114,14 +160,21 @@ if temp_celcius in given_weather_condition:
 elif description in given_weather_condition:
     print(f"Congratulations! Goal reached!")
 
-elif "windy" in given_weather_condition:
-    print(f"Congratulations! Goal reached!")
+
+elif wind<9.69:
+    print(f"Unfortunately! Goal not reached!")
+
+
+
+
+
 
 
 print("Temperature: {} degree celcius.".format(temp_celcius))
 print("Feels like: {} degree celcius. ".format(feels_like_celcius))
 print("Humidity: {} %".format(humidity))
 print("Wind Speed: {} m/s: ".format(wind) + (hawa))
+print("Weather Description: {}".format(description))
 print("Weather Description: {}".format(description))
 
 
