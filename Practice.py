@@ -1,17 +1,47 @@
 import random
 
+import mysql.connector
+from geopy.distance import geodesic as GD
+
 import requests
-def connectDatabase():
-    import mysql.connector
-    myDb = mysql.connector.connect(
-            host='127.0.0.1',
-            port=3306,
-            database='flight_simulator',
-            user='skamal',
-            password='Villain',
-            autocommit=True
-        )
-    return myDb.cursor()
+def fetch_information(name):
+    sql = "SELECT  latitude_deg from airport"
+    sql += " WHERE name ='" + name + "'"
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if cursor.rowcount >0 :
+
+        for row in result:
+
+            return (row[0])
+
+def fetch_information1(name):
+    sql = "SELECT  longitude_deg from airport"
+    sql += " WHERE name ='" + name + "'"
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if cursor.rowcount >0 :
+        for row in result:
+
+            return (row[0])
+
+
+# Main program
+connection = mysql.connector.connect(
+         host='127.0.0.1',
+         port= 3306,
+         database='flight_simulator',
+         user='skamal',
+         password='Villain',
+         autocommit=True
+         )
+
+
+
 player_firstname = input("Enter first name: ")
 player_lasttname = input("Enter last name: ")
 last_confirmation =input("Press Enter to start the game. ")
@@ -34,46 +64,64 @@ print("Your goal is to reach all of the airports having given weather conditions
 # required points to get extra energy
 #
 
-base_url = "https://api.openweathermap.org/data/2.5/weather?"
-api_key = "f1c5c2efcc1463620cfe351cb7b40f30"
-given_weather_condition=[10, 19, 20, "broken clouds", "few clouds", "clear sky", "scattered clouds"]
-display_given_weather_condition=["10°C", "19°C", "20°C", "broken clouds", "few clouds", "clear sky", "scattered clouds"]
+
+given_weather_condition=[10, 19, 20, 15,  "few clouds","broken clouds", "clear sky", "overcast clouds", "windy"]
+display_given_weather_condition=["10°C", "19°C", "20°C", "broken clouds", "few clouds", "clear sky", "scattered clouds", "overcast clouds"]
+r=random.sample(display_given_weather_condition,6)
 # rounded temp_celcius could not be read as string
 
-print(display_given_weather_condition)
+print(r)
 Available_Co2_in_kg = 6000
-city = input("Enter name of the city: ")
+airport = input("Enter the name of the airport: ").lower()
+
+lat= fetch_information(airport)
+lon=fetch_information1(airport)
+
+
 def kelvin_fahrenheit_to_celcius(kelvin):
     celcius = kelvin - 273.15
     fahrenheit = celcius*(9/5) + 32
     return celcius, fahrenheit
-url = base_url + "appid=" + api_key + "&q=" + city
+url = "https://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid=f1c5c2efcc1463620cfe351cb7b40f30&units=metric".format(lat,lon)
 response = requests.get(url).json()
-temp_kelvin = response["main"]["temp"]
-temp_celcius, temp_fahrenheit = kelvin_fahrenheit_to_celcius(temp_kelvin)
-feels_like_kelvin = response["main"]["feels_like"]
-feels_like_celcius, feels_like_fahrenheit = kelvin_fahrenheit_to_celcius(feels_like_kelvin)
+
+print(response)
+
+
+
+temp_celcius = response["main"]["temp"]
+
+feels_like_celcius = response["main"]["feels_like"]
 
 temp_celcius = round(temp_celcius)
 
-
-
-
-
-
+feels_like_celcius= round(feels_like_celcius)
 
 description = response["weather"][0]["description"]
 humidity = response["main"]["humidity"]
+wind = response["wind"]["speed"]
 
 print(response)
+
+if wind>=8.9:
+     hawa = str("windy")
+if wind<8.9:
+     hawa = str(" not windy")
+
 if temp_celcius in given_weather_condition:
     print(f"Congratulations! Goal reached!")
+
 elif description in given_weather_condition:
     print(f"Congratulations! Goal reached!")
 
-print("Temperature in " + (city) +": " + str(temp_celcius)+"°C")
-print(f"Temperature in {city} feels like: {feels_like_celcius:.0f}°C")
+elif "windy" in given_weather_condition:
+    print(f"Congratulations! Goal reached!")
 
-print(f"General Weather in {city}: {description}")
+
+print("Temperature: {} degree celcius.".format(temp_celcius))
+print("Feels like: {} degree celcius. ".format(feels_like_celcius))
+print("Humidity: {} %".format(humidity))
+print("Wind Speed: {} m/s: ".format(wind) + (hawa))
+print("Weather Description: {}".format(description))
 
 
