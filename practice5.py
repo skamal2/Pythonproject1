@@ -4,19 +4,25 @@ import mysql.connector
 from geopy.distance import geodesic as GD
 
 import requests
-count=0
+
+count = 0
+
+
 def greet():
-    print(f"Congratulations! Goal reached!")
+    print(f"Congratulations! Goal reached! \U0001f600")
     global count
-    count+=1
+    count += 1
 
     if count == 2:
-        print("Yay! You won the game!")
+        print(f"\033[1;32m Yay! You won the game! \U0001f600 \U0001f600 \U0001f600")
         print("Play Again!")
 
     return
 
-x=count
+
+x = count
+
+
 def fetch_information(name):
     sql = "SELECT  latitude_deg from airport"
     sql += " WHERE name ='" + name + "'"
@@ -24,11 +30,11 @@ def fetch_information(name):
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
-    if cursor.rowcount >0 :
+    if cursor.rowcount > 0:
 
         for row in result:
-
             return (row[0])
+
 
 def fetch_information1(name):
     sql = "SELECT  longitude_deg from airport"
@@ -37,10 +43,10 @@ def fetch_information1(name):
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
-    if cursor.rowcount >0 :
+    if cursor.rowcount > 0:
         for row in result:
-
             return (row[0])
+
 
 def fetch_information2(ident):
     sql = "SELECT  latitude_deg from airport"
@@ -49,11 +55,12 @@ def fetch_information2(ident):
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
-    if cursor.rowcount >0 :
+    if cursor.rowcount > 0:
 
         for row in result:
-
             return (row[0])
+
+
 def fetch_information3(ident):
     sql = "SELECT  longitude_deg from airport"
     sql += " WHERE ident ='" + ident + "'"
@@ -61,10 +68,10 @@ def fetch_information3(ident):
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
-    if cursor.rowcount >0 :
+    if cursor.rowcount > 0:
         for row in result:
-
             return (row[0])
+
 
 def fetch_information4(ident):
     sql = "SELECT Name, Municipality, Ident FROM airport"
@@ -73,10 +80,9 @@ def fetch_information4(ident):
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
-    if cursor.rowcount >0 :
+    if cursor.rowcount > 0:
 
         for row in result:
-
             print(f"The name of the airport is {row[0]} and it is located  in {row[1]}.")
 
 
@@ -87,39 +93,38 @@ def fetch_information5(name):
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
-    if cursor.rowcount >0 :
+    if cursor.rowcount > 0:
 
         for row in result:
-
             print(f"The name of the airport is {row[0]} and it is located  in {row[1]}.")
+
 
 # Main program
 connection = mysql.connector.connect(
-         host='127.0.0.1',
-         port= 3306,
-         database='flight_simulator',
-         user='skamal',
-         password='Villain',
-         autocommit=True
-         )
-
-
+    host='127.0.0.1',
+    port=3306,
+    database='flight_simulator',
+    user='skamal',
+    password='Villain',
+    autocommit=True
+)
 
 player_firstname = input("Enter first name: ")
 player_lasttname = input("Enter last name: ")
-last_confirmation =input("Press Enter to start the game. ")
-while(True):
+last_confirmation = input("Press Enter to start the game. ")
+while (True):
     if last_confirmation == "":
         print("Welcome To The Game!")
+        print("Starting point is: Helsinki Vantaa airport")
         break
 
-#The given weather conditions are:
+# The given weather conditions are:
 print("Your goal is to reach all of the airports having given weather conditions with given energy.")
 
-#Congratulations! One goal reached.
-#Unfortunately you did not reach any goals!
-#current weather
-#current location,
+# Congratulations! One goal reached.
+# Unfortunately you did not reach any goals!
+# current weather
+# current location,
 # distance between origin and destination,
 # consumed energy,
 # available energy, achieved goals,
@@ -128,36 +133,32 @@ print("Your goal is to reach all of the airports having given weather conditions
 #
 
 
-given_weather_condition=[10, 15, 20,  "few clouds","broken clouds", "clear sky", ]
-display_given_weather_condition=["10°C", "15°C", "20°C",  "few clouds", "broken clouds","clear sky"]
-r=random.sample(display_given_weather_condition,6)
+given_weather_condition = [9, 15, 20, "few clouds", "broken clouds", "clear sky"]
+display_given_weather_condition = ["10°C", "15°C", "20°C", "few clouds", "broken clouds", "clear sky"]
+#r = random.sample(display_given_weather_condition, 6)
 # rounded temp_celcius could not be read as string
-
-print(r)
+#print(r)
+print(display_given_weather_condition)
 available_Co2_in_kg = 10000
 available_Co2_in_kg1 = 0
 while available_Co2_in_kg1 == 0:
-    available_Co2_in_kg1 = available_Co2_in_kg1 + 1000
+    available_Co2_in_kg1 = available_Co2_in_kg1 + 2000
     print(f"consumed {available_Co2_in_kg1}")
 
+while available_Co2_in_kg >= 2000:
 
-while available_Co2_in_kg>=1000:
-    if count==2:
+    if count == 6 or available_Co2_in_kg==0:
         break
     airport = input("Enter the name of the airport or ICAO code: ").lower()
-    available_Co2_in_kg = available_Co2_in_kg-1000
+    available_Co2_in_kg = available_Co2_in_kg - 1000
     fetch_information4(airport)
     fetch_information5(airport)
 
+    lat = fetch_information(airport) or fetch_information2(airport)
+    lon = fetch_information1(airport) or fetch_information3(airport)
 
-
-
-    lat= fetch_information(airport) or fetch_information2(airport)
-    lon=fetch_information1(airport) or fetch_information3(airport)
-
-
-
-    url = "https://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid=f1c5c2efcc1463620cfe351cb7b40f30&units=metric".format(lat,lon)
+    url = "https://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid=f1c5c2efcc1463620cfe351cb7b40f30&units=metric".format(
+        lat, lon)
     response = requests.get(url).json()
 
     temp_celcius = response["main"]["temp"]
@@ -166,7 +167,7 @@ while available_Co2_in_kg>=1000:
 
     temp_celcius = round(temp_celcius)
 
-    feels_like_celcius= round(feels_like_celcius)
+    feels_like_celcius = round(feels_like_celcius)
 
     description = response["weather"][0]["description"]
 
@@ -174,28 +175,23 @@ while available_Co2_in_kg>=1000:
     wind = response["wind"]["speed"]
 
 
-    if wind>=9.69:
-         hawa = str("windy")
-    if wind<9.69:
-         hawa = str(" not windy")
-
     if temp_celcius in given_weather_condition:
         greet()
+        given_weather_condition.remove(temp_celcius)
+        print(f"Remaining goals: {given_weather_condition}")
 
     elif description in given_weather_condition:
         greet()
+        given_weather_condition.remove(description)
+        print(f"Remaining goals: {given_weather_condition}")
 
-
-
-
-
-
+    else:
+        print(f"Unfortunately! Goal not reached. \U0001F61E")
+        print(f"Remaining goals: {given_weather_condition}")
 
     print("Temperature: {} degree celcius.".format(temp_celcius))
     print("Feels like: {} degree celcius. ".format(feels_like_celcius))
     print("Humidity: {} %".format(humidity))
-    print("Wind Speed: {} m/s: ".format(wind) + (hawa))
     print("Weather Description: {}".format(description))
 
 
-print("C02 finished.")
