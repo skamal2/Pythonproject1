@@ -13,7 +13,7 @@ def greet():
     global count
     count += 1
 
-    if count == 2:
+    if count == 4:
         print(f"\033[92m Yay! You won! \U0001f600 \U0001f600 \U0001f600")
         print("Play Again!")
 
@@ -133,8 +133,8 @@ print("Your goal is to reach all of the airports having given weather conditions
 #
 
 
-given_weather_condition = [18, 15, 20, "few clouds", "broken clouds", "clear sky"]
-display_given_weather_condition = ["10°C", "15°C", "20°C", "few clouds", "broken clouds", "clear sky"]
+given_weather_condition = [20, 15, "broken clouds", "clear sky"]
+display_given_weather_condition = ["20°C", "15°C", "broken clouds", "clear sky"]
 #r = random.sample(display_given_weather_condition, 6)
 # rounded temp_celcius could not be read as string
 #print(r)
@@ -144,9 +144,10 @@ available_Co2_in_kg = 10000
 
 Co2_consumed_in_kg = 0
 while available_Co2_in_kg >=2000:
-    if count==2:
+    if count == 4:
         break
-    print(f"Energy consumed: {Co2_consumed_in_kg}")
+
+    print(f"Total energy consumed: {Co2_consumed_in_kg}")
     Co2_consumed_in_kg = Co2_consumed_in_kg + 2000
     print(f"Remaining energy: {available_Co2_in_kg}")
     available_Co2_in_kg = available_Co2_in_kg - 2000

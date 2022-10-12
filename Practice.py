@@ -10,7 +10,7 @@ def greet():
     global count
     count+=1
 
-    if count == 2:
+    if count == 5:
         print("Yay! You won the game!")
         print("Play Again!")
 
@@ -142,7 +142,7 @@ while available_Co2_in_kg1 == 0:
 
 
 while available_Co2_in_kg>=1000:
-    if count==2:
+    if count==5:
         break
     airport = input("Enter the name of the airport or ICAO code: ").lower()
     available_Co2_in_kg = available_Co2_in_kg-1000
