@@ -14,16 +14,14 @@ def greet():
     count += 1
 
     if count == 2:
-        print(f"\033[132m Yay! You won! \U0001f600 \U0001f600 \U0001f600")
+        print(f"\033[92m Yay! You won! \U0001f600 \U0001f600 \U0001f600")
         print("Play Again!")
 
     return
 
 
 x = count
-while(True):
-    if count ==2:
-        break
+
 
 def fetch_information(name):
     sql = "SELECT  latitude_deg from airport"
@@ -146,6 +144,8 @@ available_Co2_in_kg = 10000
 
 Co2_consumed_in_kg = 0
 while available_Co2_in_kg >=2000:
+    if count==2:
+        break
     print(f"Energy consumed: {Co2_consumed_in_kg}")
     Co2_consumed_in_kg = Co2_consumed_in_kg + 2000
     print(f"Remaining energy: {available_Co2_in_kg}")
