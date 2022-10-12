@@ -14,14 +14,16 @@ def greet():
     count += 1
 
     if count == 2:
-        print(f"\033[1;32m Yay! You won the game! \U0001f600 \U0001f600 \U0001f600")
+        print(f"\033[132m Yay! You won! \U0001f600 \U0001f600 \U0001f600")
         print("Play Again!")
 
     return
 
 
 x = count
-
+while(True):
+    if count ==2:
+        break
 
 def fetch_information(name):
     sql = "SELECT  latitude_deg from airport"
@@ -133,24 +135,28 @@ print("Your goal is to reach all of the airports having given weather conditions
 #
 
 
-given_weather_condition = [9, 15, 20, "few clouds", "broken clouds", "clear sky"]
+given_weather_condition = [18, 15, 20, "few clouds", "broken clouds", "clear sky"]
 display_given_weather_condition = ["10°C", "15°C", "20°C", "few clouds", "broken clouds", "clear sky"]
 #r = random.sample(display_given_weather_condition, 6)
 # rounded temp_celcius could not be read as string
 #print(r)
 print(display_given_weather_condition)
 available_Co2_in_kg = 10000
-available_Co2_in_kg1 = 0
-while available_Co2_in_kg1 == 0:
-    available_Co2_in_kg1 = available_Co2_in_kg1 + 2000
-    print(f"consumed {available_Co2_in_kg1}")
 
-while available_Co2_in_kg >= 2000:
 
-    if count == 6 or available_Co2_in_kg==0:
-        break
+Co2_consumed_in_kg = 0
+while available_Co2_in_kg >=2000:
+    print(f"Energy consumed: {Co2_consumed_in_kg}")
+    Co2_consumed_in_kg = Co2_consumed_in_kg + 2000
+    print(f"Remaining energy: {available_Co2_in_kg}")
+    available_Co2_in_kg = available_Co2_in_kg - 2000
+
+
+
+
+
     airport = input("Enter the name of the airport or ICAO code: ").lower()
-    available_Co2_in_kg = available_Co2_in_kg - 1000
+
     fetch_information4(airport)
     fetch_information5(airport)
 
@@ -194,4 +200,9 @@ while available_Co2_in_kg >= 2000:
     print("Humidity: {} %".format(humidity))
     print("Weather Description: {}".format(description))
 
+
+
+
+    if available_Co2_in_kg==0:
+        print(f"\033[91mEnergy Over.\nYou Lost!\nTry Again!\U0001F917\U0001F917\U0001F917")
 
