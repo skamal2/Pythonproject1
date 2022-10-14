@@ -74,7 +74,7 @@ def fetch_information3(ident):
 
 
 def fetch_information4(ident):
-    sql = "SELECT Name, Municipality, Ident FROM airport"
+    sql = "SELECT Name, Municipality, Ident, Iso_country FROM airport"
     sql += " WHERE ident='" + ident + "'"
 
     cursor = connection.cursor()
@@ -83,11 +83,11 @@ def fetch_information4(ident):
     if cursor.rowcount > 0:
 
         for row in result:
-            print(f"The name of the airport is {row[0]} and it is located  in {row[1]}.")
+            print(f"The name of the airport is {row[0]} and it is located  in {row[1]}, {row[3]}.")
 
 
 def fetch_information5(name):
-    sql = "SELECT Name, Municipality, Ident FROM airport"
+    sql = "SELECT Name, Municipality, Ident, Iso_country FROM airport"
     sql += " WHERE name='" + name + "'"
 
     cursor = connection.cursor()
@@ -96,7 +96,7 @@ def fetch_information5(name):
     if cursor.rowcount > 0:
 
         for row in result:
-            print(f"The name of the airport is {row[0]} and it is located  in {row[1]}.")
+            print(f"The name of the airport is {row[0]} and it is located  in {row[1]}, {row[3]}.")
 
 
 # Main program
