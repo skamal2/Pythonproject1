@@ -13,7 +13,7 @@ def greet():
     global count
     count += 1
 
-    if count == 4:
+    if count == 2:
         print(f"\033[92m Yay! You won! \U0001f600 \U0001f600 \U0001f600")
         print("Play Again!")
 
@@ -74,7 +74,7 @@ def fetch_information3(ident):
 
 
 def fetch_information4(ident):
-    sql = "SELECT Name, Municipality, Ident FROM airport"
+    sql = "SELECT Name, Municipality, Ident, Iso_country FROM airport"
     sql += " WHERE ident='" + ident + "'"
 
     cursor = connection.cursor()
@@ -83,11 +83,11 @@ def fetch_information4(ident):
     if cursor.rowcount > 0:
 
         for row in result:
-            print(f"The name of the airport is {row[0]} and it is located  in {row[1]}.")
+            print(f"The name of the airport is {row[0]} and it is located  in {row[1]}, {row[3]}.")
 
 
 def fetch_information5(name):
-    sql = "SELECT Name, Municipality, Ident FROM airport"
+    sql = "SELECT Name, Municipality, Ident, Iso_country FROM airport"
     sql += " WHERE name='" + name + "'"
 
     cursor = connection.cursor()
@@ -96,7 +96,7 @@ def fetch_information5(name):
     if cursor.rowcount > 0:
 
         for row in result:
-            print(f"The name of the airport is {row[0]} and it is located  in {row[1]}.")
+            print(f"The name of the airport is {row[0]} and it is located  in {row[1]}, {row[3]}.")
 
 
 # Main program
@@ -133,8 +133,8 @@ print("Your goal is to reach all of the airports having given weather conditions
 #
 
 
-given_weather_condition = [1, 21, 4, "clear sky"]
-display_given_weather_condition = ["20°C", "15°C", "4°C", "clear sky"]
+given_weather_condition = ["overcast clouds", "clear sky"]
+display_given_weather_condition = ["overcast clouds", "clear sky"]
 #r = random.sample(display_given_weather_condition, 6)
 # rounded temp_celcius could not be read as string
 #print(r)
@@ -144,7 +144,7 @@ available_Co2_in_kg = 10000
 
 Co2_consumed_in_kg = 0
 while available_Co2_in_kg >=2000:
-    if count == 4:
+    if count == 2:
         break
 
     print(f"Total energy consumed: {Co2_consumed_in_kg}")
