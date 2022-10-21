@@ -116,20 +116,6 @@ def fetch_airport_icao(ident):
     cursor.execute(sql)
     result = cursor.fetchall()
 
-
-def fetch_airport_distance(ident):
-    sql = "SELECT  latitude_deg, longitude_deg from airport"
-    sql += " WHERE ident ='" + ident + "'"
-    cursor = connection.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    if cursor.rowcount > 0:
-        for row in result:
-            return (row[0], row[1])
-
-
-
-
 def fetch_information6(ident):
     sql = "SELECT Name, Municipality, Ident, Iso_country FROM airport"
     sql += " WHERE ident='" + ident + "'"
@@ -209,27 +195,18 @@ while (True):
 
     Co2_consumed_in_kg = 0
 
-
-    list = ["efhk"]
+    list = []
+    airport = ("efhk")
     while available_Co2_in_kg >= 2000:
-
-        airport = input("Enter the name of the airport or ICAO code: ").lower()
         list.append(airport)
-
+        airport = input("Enter the name of the airport or ICAO code: ").lower()
         airportname = fetch_information6(airport)
 
         length=len((list))
         a = list[(length-1)]
-        b = list[(length-2)]
-        print(list)
-        m = fetch_airport_distance(a)[0:2]
-        n = fetch_airport_distance(b)[0:2]
-        distance = GD(m, n).km
-        print(f"The distance of your journey was: {distance:.2f}km")
 
 
-
-        if airport ==b:
+        if airport ==a:
 
             print("You cannot fly to your current destination!")
             print("Choose another destination.")

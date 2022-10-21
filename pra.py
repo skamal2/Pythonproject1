@@ -83,7 +83,7 @@ def fetch_information4(ident):
     if cursor.rowcount > 0:
 
         for row in result:
-            print(f"The name of the airport is {row[0]} and it is located  in {row[1]}, {row[3]}.")
+            print(f"Current location: The name of the airport is {row[0]} and it is located  in {row[1]}, {row[3]}.")
 
 
 def fetch_information5(name):
@@ -117,6 +117,30 @@ def fetch_airport_icao(ident):
     result = cursor.fetchall()
 
 
+def fetch_airport_distance(ident):
+    sql = "SELECT  latitude_deg, longitude_deg from airport"
+    sql += " WHERE ident ='" + ident + "'"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if cursor.rowcount > 0:
+        for row in result:
+            return (row[0], row[1])
+
+
+
+
+def fetch_information6(ident):
+    sql = "SELECT Name, Municipality, Ident, Iso_country FROM airport"
+    sql += " WHERE ident='" + ident + "'"
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if cursor.rowcount > 0:
+
+        for row in result:
+            print(f"{row[0]}")
 # Main program
 connection = mysql.connector.connect(
     host='127.0.0.1',
@@ -126,6 +150,8 @@ connection = mysql.connector.connect(
     password='Villain',
     autocommit=True
 )
+
+
 finnavia = "efhk"
 while True:
 
@@ -149,6 +175,7 @@ while (True):
     if last_confirmation == "":
         print("Welcome To The Game!")
         fetch_information4(finnavia)
+        print("You have 10,000kg Co2 budget.")
 
 
     else:
@@ -181,17 +208,38 @@ while (True):
     print(remain)
 
     Co2_consumed_in_kg = 0
+
+
+    list = ["efhk"]
     while available_Co2_in_kg >= 2000:
+
         airport = input("Enter the name of the airport or ICAO code: ").lower()
-        if airport == "efhk" or airport == "helsinki vantaa airport":
-            print("choose")
+        list.append(airport)
+
+        airportname = fetch_information6(airport)
+
+        length=len((list))
+        a = list[(length-1)]
+        b = list[(length-2)]
+        print(list)
+        m = fetch_airport_distance(a)[0:2]
+        n = fetch_airport_distance(b)[0:2]
+        distance = GD(m, n).km
+        print(f"The distance of your journey was: {distance:.2f}km")
+
+
+
+        if airport ==b:
+
+            print("You cannot fly to your current destination!")
+            print("Choose another destination.")
             continue
         if count == 4:
             break
 
-        print(f"Total energy consumed: {Co2_consumed_in_kg}")
+        print(f"Total energy consumed: {Co2_consumed_in_kg+2000}")
         Co2_consumed_in_kg = Co2_consumed_in_kg + 2000
-        print(f"Remaining energy: {available_Co2_in_kg}")
+        print(f"Remaining energy: {available_Co2_in_kg-2000}")
         available_Co2_in_kg = available_Co2_in_kg - 2000
 
 
@@ -204,8 +252,8 @@ while (True):
         fetch_information4(airport)
         fetch_information5(airport)
 
-        lat = fetch_information(airport) or fetch_information2(airport)
-        lon = fetch_information1(airport) or fetch_information3(airport)
+        lat = fetch_information2(airport)
+        lon = fetch_information3(airport)
 
         url = "https://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid=f1c5c2efcc1463620cfe351cb7b40f30&units=metric".format(
             lat, lon)
