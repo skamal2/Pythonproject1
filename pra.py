@@ -128,8 +128,6 @@ def fetch_airport_distance(ident):
             return (row[0], row[1])
 
 
-
-
 def fetch_information6(ident):
     sql = "SELECT Name, Municipality, Ident, Iso_country FROM airport"
     sql += " WHERE ident='" + ident + "'"
@@ -141,6 +139,8 @@ def fetch_information6(ident):
 
         for row in result:
             print(f"{row[0]}")
+
+
 # Main program
 connection = mysql.connector.connect(
     host='127.0.0.1',
@@ -150,7 +150,6 @@ connection = mysql.connector.connect(
     password='Villain',
     autocommit=True
 )
-
 
 finnavia = "efhk"
 while True:
@@ -209,7 +208,6 @@ while (True):
 
     Co2_consumed_in_kg = 0
 
-
     list = ["efhk"]
     while available_Co2_in_kg >= 2000:
         try:
@@ -219,31 +217,26 @@ while (True):
 
             airportname = fetch_information6(airport)
 
-            length=len((list))
-            a = list[(length-1)]
-            b = list[(length-2)]
+            length = len((list))
+            a = list[(length - 1)]
+            b = list[(length - 2)]
             print(list)
             m = fetch_airport_distance(a)[0:2]
             n = fetch_airport_distance(b)[0:2]
             distance = GD(m, n).km
             print(f"The distance of your journey was: {distance:.2f}km")
 
-
-
-            if airport ==b:
-
+            if airport == b:
                 print("You cannot fly to your current destination!")
                 print("Choose another destination.")
                 continue
             if count == 4:
                 break
 
-            print(f"Total energy consumed: {Co2_consumed_in_kg+2000}")
+            print(f"Total energy consumed: {Co2_consumed_in_kg + 2000}")
             Co2_consumed_in_kg = Co2_consumed_in_kg + 2000
-            print(f"Remaining energy: {available_Co2_in_kg-2000}")
+            print(f"Remaining energy: {available_Co2_in_kg - 2000}")
             available_Co2_in_kg = available_Co2_in_kg - 2000
-
-
 
             icao_codes = fetch_airport_icao(airport)
             icao_codes = [icao_codes]
@@ -304,7 +297,10 @@ while (True):
             print(f"Weather Description: {description}.")
             print(f"Wind: {wind}m/s.")
         except TypeError:
-            print("Invalid airport")
+            if True:
+                print("Invalid airport")
+                list.remove(airport)
+
     if available_Co2_in_kg == 0:
         print(f"\033[91mEnergy Over.\nYou Lost!\nTry Again!\U0001F917\U0001F917\U0001F917")
 

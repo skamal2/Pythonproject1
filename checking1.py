@@ -2,6 +2,7 @@ import random
 import sys
 import mysql.connector
 from geopy.distance import geodesic as GD
+from tabulate import tabulate
 
 import requests
 
@@ -13,7 +14,7 @@ def greet():
     global count
     count += 1
 
-    if count == 4:
+    if count == 8:
         print(f"\033[92m Yay! You won! \U0001f600 \U0001f600 \U0001f600")
         print("Play Again!")
 
@@ -128,8 +129,6 @@ def fetch_airport_distance(ident):
             return (row[0], row[1])
 
 
-
-
 def fetch_information6(ident):
     sql = "SELECT Name, Municipality, Ident, Iso_country FROM airport"
     sql += " WHERE ident='" + ident + "'"
@@ -141,6 +140,8 @@ def fetch_information6(ident):
 
         for row in result:
             print(f"{row[0]}")
+
+
 # Main program
 connection = mysql.connector.connect(
     host='127.0.0.1',
@@ -150,7 +151,6 @@ connection = mysql.connector.connect(
     password='Villain',
     autocommit=True
 )
-
 
 finnavia = "efhk"
 while True:
@@ -167,8 +167,6 @@ while True:
     print("Please enter characters A-Z only")
 last_confirmation = input("Press Enter to start the game or any other characters to quit. ")
 
-given_weather_condition = [["  Very Hot  ", "    Windy       ", "Freezing Cold", "clear sky"],
-                           ["Weather>30°C", "Wind speed>10m/s", "Weather<0°C  ", "No clouds"]]
 
 while (True):
 
@@ -182,10 +180,11 @@ while (True):
         print("See You Again!")
         break
 
-    for row in given_weather_condition:
-        print('| {:1} | {:^4} | {:>4} | {:<3} |'.format(*row))
+    print(tabulate(
+        [['Hot', 'Temperature over +25C'], ['Cold', 'Temperature under -20C'], ['0DEG', 'Temperature exactly 0C'],
+         ['10DEG', 'Temperature exactly +10C'], ['20DEG', 'Temperature exactly +20C'], ['CLEAR', 'Clear skies'],
+         ['CLOUDS', 'Cloudy'], [' WINDY', ' Wind blows more than 10 m/s']], headers=['Weather', 'Description']))
 
-    # The given weather conditions are:
     print("Your goal is to reach all of the airports having given weather conditions with given energy.")
 
     # Congratulations! One goal reached.
@@ -203,12 +202,11 @@ while (True):
     # rounded temp_celcius could not be read as string
     # print(r)
 
-    remain = ["very hot", "windy", "freezing cold", "clear sky"]
-    available_Co2_in_kg = 10000
+    remain = ["Hot", "Cold", "0DEG", "10DEG", "20DEG", "CLEAR", "CLOUDS", "WINDY"]
+    available_Co2_in_kg = 20000
     print(remain)
 
     Co2_consumed_in_kg = 0
-
 
     list = ["efhk"]
     while available_Co2_in_kg >= 2000:
@@ -219,31 +217,26 @@ while (True):
 
             airportname = fetch_information6(airport)
 
-            length=len((list))
-            a = list[(length-1)]
-            b = list[(length-2)]
+            length = len((list))
+            a = list[(length - 1)]
+            b = list[(length - 2)]
             print(list)
             m = fetch_airport_distance(a)[0:2]
             n = fetch_airport_distance(b)[0:2]
             distance = GD(m, n).km
             print(f"The distance of your journey was: {distance:.2f}km")
 
-
-
-            if airport ==b:
-
+            if airport == b:
                 print("You cannot fly to your current destination!")
                 print("Choose another destination.")
                 continue
-            if count == 4:
+            if count == 8:
                 break
 
-            print(f"Total energy consumed: {Co2_consumed_in_kg+2000}")
+            print(f"Total energy consumed: {Co2_consumed_in_kg + 2000}")
             Co2_consumed_in_kg = Co2_consumed_in_kg + 2000
-            print(f"Remaining energy: {available_Co2_in_kg-2000}")
+            print(f"Remaining energy: {available_Co2_in_kg - 2000}")
             available_Co2_in_kg = available_Co2_in_kg - 2000
-
-
 
             icao_codes = fetch_airport_icao(airport)
             icao_codes = [icao_codes]
@@ -274,29 +267,50 @@ while (True):
             humidity = response["main"]["humidity"]
             wind = response["wind"]["speed"]
 
-            if (temp_celcius > 30):
+            if (temp_celcius > 25):
                 greet()
-                remain.remove("very hot")
+                remain.remove("Hot")
                 print(f"Remaining goals: {remain}")
 
-            elif (temp_celcius < 0):
+            elif (temp_celcius < -20):
                 greet()
-                remain.remove("freezing cold")
+                remain.remove("Cold")
+                print(f"Remaining goals: {remain}")
+
+            elif (temp_celcius == 0):
+                greet()
+                remain.remove("0DEG")
+                print(f"Remaining goals: {remain}")
+
+            elif (temp_celcius == 10):
+                greet()
+                remain.remove("10DEG")
+                print(f"Remaining goals: {remain}")
+
+            elif (temp_celcius == 20):
+                greet()
+                remain.remove("20DEG")
+                print(f"Remaining goals: {remain}")
+
+            elif (description == "clear sky"):
+                greet()
+                remain.remove('ClEAR')
+                print(f"Remaining goals: {remain}")
+
+            elif description == "few clouds":
+                greet()
+                remain.remove("CLOUDS")
                 print(f"Remaining goals: {remain}")
 
             elif (wind > 10):
                 greet()
-                remain.remove("windy")
-                print(f"Remaining goals: {remain}")
-
-            elif description in remain:
-                greet()
-                remain.remove(description)
+                remain.remove("WINDY")
                 print(f"Remaining goals: {remain}")
 
             else:
                 print(f"Unfortunately! Goal not reached. \U0001F61E")
                 print(f"Remaining goals: {remain}")
+                break
 
             print(f"Temperature: {temp_celcius} degree celcius.")
             print(f"Feels like: {feels_like_celcius} degree celcius. ")
@@ -304,7 +318,10 @@ while (True):
             print(f"Weather Description: {description}.")
             print(f"Wind: {wind}m/s.")
         except TypeError:
-            print("Invalid airport")
+            if True:
+                print("Invalid airport")
+                list.remove(airport)
+
     if available_Co2_in_kg == 0:
         print(f"\033[91mEnergy Over.\nYou Lost!\nTry Again!\U0001F917\U0001F917\U0001F917")
 
