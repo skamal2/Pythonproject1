@@ -14,7 +14,7 @@ def greet():
     global count
     count += 1
 
-    if count == 4:
+    if count == 8:
         print(f"\033[92m Yay! You won! \U0001f600 \U0001f600 \U0001f600")
         print("Play Again!")
 
@@ -206,11 +206,11 @@ while (True):
     # print(r)
 
     remain=["hot","cold","0deg","10deg","20deg","clear", "clouds","windy"]
-    available_Co2_in_kg = 20000
+    available_Co2_in_kg = 10000
     print(remain)
 
     Co2_consumed_in_kg = 0
-
+    distance_factor=0.07
     list = ["efhk"]
     while available_Co2_in_kg >= 2000:
         try:
@@ -236,10 +236,10 @@ while (True):
             if count == 4:
                 break
 
-            print(f"Total energy consumed: {Co2_consumed_in_kg + 2000}")
-            Co2_consumed_in_kg = Co2_consumed_in_kg + 2000
-            print(f"Remaining energy: {available_Co2_in_kg - 2000}")
-            available_Co2_in_kg = available_Co2_in_kg - 2000
+            print(f"Total energy consumed: {Co2_consumed_in_kg + (distance*distance_factor)}")
+            Co2_consumed_in_kg = Co2_consumed_in_kg + (distance*distance_factor)
+            print(f"Remaining energy: {available_Co2_in_kg - Co2_consumed_in_kg}")
+            available_Co2_in_kg = available_Co2_in_kg - distance*distance_factor
 
             icao_codes = fetch_airport_icao(airport)
             icao_codes = [icao_codes]

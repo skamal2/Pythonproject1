@@ -14,12 +14,13 @@ def greet():
     print(f"Congratulations! Goal reached! \U0001f600")
     global count
     count += 1
+    while True:
+        if count == 3:
+            print(f"\033[92m Yay! You won! \U0001f600 \U0001f600 \U0001f600")
+            print("Play Again!")
+            break
 
-    if count == 8:
-        print(f"\033[92m Yay! You won! \U0001f600 \U0001f600 \U0001f600")
-        print("Play Again!")
-
-    return
+        return
 
 
 x = count
@@ -174,22 +175,25 @@ while (True):
         break #End execution of prgram.
 #tabulate creates table like structure.
     print(tabulate(
-        [['Hot', 'Temperature over +25C'], ['Cold', 'Temperature under -20C'], ['0DEG', 'Temperature exactly 0C'],
-         ['10DEG', 'Temperature exactly +10C'], ['20DEG', 'Temperature exactly +20C'], ['CLEAR', 'Clear skies'],
-         ['CLOUDS', 'Few clouds'], [' WINDY', ' Wind blows more than 10 m/s']], headers=['Weather', 'Description']))
+        [['Hot', 'Temperature over +25C'], ['Cold', 'Temperature under 10C'],
+        ['CLEAR', 'Clear skies']], headers=['Weather', 'Description']))
 
     # The given weather conditions.
     print("Your goal is to reach all of the airports having given weather conditions with given energy.")
 
-    remain=["HOT","COLD","0DEG","10DEG","20DEG","CLEAR", "CLOUDS","WINDY"]
+    remain=["HOT","COLD","CLEAR"]
     co2_budget = 10000
     print(remain)
 
     consumed_co2 = 0
 
     list_of_user_input = ["efhk"]
-    while co2_budget >0:
+
+    while co2_budget >=0:
+
+
         try:
+
             airport = input("Enter the name of the airport or ICAO code: ").lower()
 
             list_of_user_input.append(airport)
@@ -209,12 +213,14 @@ while (True):
             print(f"The distance of your journey was: {distance:.2f}km")
             fuel_consumption_factor = 0.09 * distance
             #9kg fuel for 100km.
+
             if airport == current_destination:
                 print("You cannot fly to your current destination!")
                 print("Choose another destination.")
                 continue
-            if count == 8:
-                break
+
+
+
             # count is used for counting goals achieved, greet function is created for that.
 
             print(f"Total energy consumed: {consumed_co2 + fuel_consumption_factor}")
@@ -226,9 +232,6 @@ while (True):
 
 
             icao_codes = fetch_airport_icao(airport)
-
-            airport_names = fetch_airport_name(airport)
-
 
             for_name_location_of_user_input(airport)
 
@@ -261,39 +264,14 @@ while (True):
                 remain.remove("HOT")
                 print(f"Remaining goals: {remain}")
 
-            elif (temp_celcius < -20) and ("COLD" in remain):
+            elif (temp_celcius < 10) and ("COLD" in remain):
                 greet()
                 remain.remove("COLD")
-                print(f"Remaining goals: {remain}")
-
-            elif (temp_celcius == 0) and ("0DEG" in remain):
-                greet()
-                remain.remove("0DEG")
-                print(f"Remaining goals: {remain}")
-
-            elif (temp_celcius == 10) and ("10DEG" in remain):
-                greet()
-                remain.remove("10DEG")
-                print(f"Remaining goals: {remain}")
-
-            elif (temp_celcius == 20) and ("20DEG" in remain):
-                greet()
-                remain.remove("20DEG")
                 print(f"Remaining goals: {remain}")
 
             elif (description == "clear sky") and ("CLEAR" in remain):
                 greet()
                 remain.remove('CLEAR')
-                print(f"Remaining goals: {remain}")
-
-            elif description == "few clouds" and ("CLOUDS" in remain):
-                greet()
-                remain.remove("CLOUDS")
-                print(f"Remaining goals: {remain}")
-
-            elif (wind > 10) and ("WINDY" in remain):
-                greet()
-                remain.remove("WINDY")
                 print(f"Remaining goals: {remain}")
 
             else:
@@ -307,12 +285,18 @@ while (True):
             print(f"Wind: {wind}m/s.")
 
         except TypeError:
+
             if True:
                 print("Invalid airport")
                 list_of_user_input.remove(airport)
 
 
-    if co2_budget < fuel_consumption_factor: #does not work because of above while loop
+        if count == 3:
+            break
+    if count==3:
+        break
+
+    if co2_budget <=0: #does not work because of above while loop
         print(f"\033[91mEnergy Over.\nYou Lost!\nTry Again!\U0001F917\U0001F917\U0001F917")
 
         break

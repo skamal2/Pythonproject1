@@ -14,7 +14,7 @@ def greet():
     global count
     count += 1
 
-    if count == 4:
+    if count == 8:
         print(f"\033[92m Yay! You won! \U0001f600 \U0001f600 \U0001f600")
         print("Play Again!")
 
@@ -168,7 +168,7 @@ while True:
 last_confirmation = input("Press Enter to start the game or any other characters to quit. ")
 
 given_weather_condition = [["  Very Hot  ", "    Windy       ", "Freezing Cold", "clear sky"],
-                           ["Weather>30°C", "Wind speed>10m/s", "Weather<0°C  ", "No clouds"]]
+                         ["Weather>30°C", "Wind speed>10m/s", "Weather<0°C  ", "No clouds"]]
 
 while (True):
 
@@ -205,18 +205,19 @@ while (True):
     # rounded temp_celcius could not be read as string
     # print(r)
 
-    remain=["hot","cold","0deg","10deg","20deg","clear", "clouds","windy"]
-    available_Co2_in_kg = 20000
+    remain=["HOT","COLD","0DEG","10DEG","20DEG","CLEAR", "CLOUDS","WINDY"]
+    available_Co2_in_kg = 10000
     print(remain)
 
     Co2_consumed_in_kg = 0
 
     list = ["efhk"]
-    while available_Co2_in_kg >= 2000:
+    while available_Co2_in_kg >= 000:
         try:
             airport = input("Enter the name of the airport or ICAO code: ").lower()
 
             list.append(airport)
+
 
             airportname = fetch_information6(airport)
 
@@ -227,19 +228,21 @@ while (True):
             m = fetch_airport_distance(a)[0:2]
             n = fetch_airport_distance(b)[0:2]
             distance = GD(m, n).km
-            print(f"The distance of your journey was: {distance:.2f}km")
 
+            print(f"The distance of your journey was: {distance:.2f}km")
+            fuel_consumption_factor = 0.09 * distance
             if airport == b:
                 print("You cannot fly to your current destination!")
                 print("Choose another destination.")
                 continue
-            if count == 4:
+            if count == 8:
                 break
 
-            print(f"Total energy consumed: {Co2_consumed_in_kg + 2000}")
-            Co2_consumed_in_kg = Co2_consumed_in_kg + 2000
-            print(f"Remaining energy: {available_Co2_in_kg - 2000}")
-            available_Co2_in_kg = available_Co2_in_kg - 2000
+            print(f"Total energy consumed: {Co2_consumed_in_kg + fuel_consumption_factor}")
+            Co2_consumed_in_kg = Co2_consumed_in_kg + fuel_consumption_factor
+            print(f"Remaining energy: {available_Co2_in_kg - fuel_consumption_factor}")
+            available_Co2_in_kg = available_Co2_in_kg - fuel_consumption_factor
+            fuel_consumption_factor = 0.9 * distance
 
             icao_codes = fetch_airport_icao(airport)
             icao_codes = [icao_codes]
@@ -270,44 +273,45 @@ while (True):
             humidity = response["main"]["humidity"]
             wind = response["wind"]["speed"]
 
-            if (temp_celcius > 25) and (("hot") in remain):
+
+            if (temp_celcius > 25) and (("HOT") in remain):
                 greet()
-                remain.remove("hot")
+                remain.remove("HOT")
                 print(f"Remaining goals: {remain}")
 
-            elif (temp_celcius < -20) and ("cold" in remain):
+            elif (temp_celcius < -20) and ("COLD" in remain):
                 greet()
-                remain.remove("cold")
+                remain.remove("COLD")
                 print(f"Remaining goals: {remain}")
 
-            elif (temp_celcius == 0) and ("0deg" in remain):
+            elif (temp_celcius == 0) and ("0DEG" in remain):
                 greet()
-                remain.remove("0deg")
+                remain.remove("0DEG")
                 print(f"Remaining goals: {remain}")
 
-            elif (temp_celcius == 10) and ("10deg" in remain):
+            elif (temp_celcius == 10) and ("10DEG" in remain):
                 greet()
-                remain.remove("10deg")
+                remain.remove("10DEG")
                 print(f"Remaining goals: {remain}")
 
-            elif (temp_celcius == 20) and ("20deg" in remain):
+            elif (temp_celcius == 20) and ("20DEG" in remain):
                 greet()
-                remain.remove("20deg")
+                remain.remove("20DEG")
                 print(f"Remaining goals: {remain}")
 
-            elif (description == "clear sky") and ("clear" in remain):
+            elif (description == "clear sky") and ("CLEAR" in remain):
                 greet()
-                remain.remove('clear')
+                remain.remove('CLEAR')
                 print(f"Remaining goals: {remain}")
 
-            elif description == "few clouds" and ("clouds" in remain):
+            elif description == "few clouds" and ("CLOUDS" in remain):
                 greet()
-                remain.remove("clouds")
+                remain.remove("CLOUDS")
                 print(f"Remaining goals: {remain}")
 
-            elif (wind > 10) and ("windy" in remain):
+            elif (wind > 10) and ("WINDY" in remain):
                 greet()
-                remain.remove("windy")
+                remain.remove("WINDY")
                 print(f"Remaining goals: {remain}")
 
             else:
@@ -319,12 +323,14 @@ while (True):
             print(f"Humidity: {humidity}.")
             print(f"Weather Description: {description}.")
             print(f"Wind: {wind}m/s.")
+
         except TypeError:
             if True:
                 print("Invalid airport")
                 list.remove(airport)
 
-    if available_Co2_in_kg == 0:
+
+    if available_Co2_in_kg < 50:
         print(f"\033[91mEnergy Over.\nYou Lost!\nTry Again!\U0001F917\U0001F917\U0001F917")
 
         break
