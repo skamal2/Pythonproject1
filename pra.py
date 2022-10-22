@@ -2,6 +2,7 @@ import random
 import sys
 import mysql.connector
 from geopy.distance import geodesic as GD
+from tabulate import tabulate
 
 import requests
 
@@ -181,8 +182,10 @@ while (True):
         print("See You Again!")
         break
 
-    for row in given_weather_condition:
-        print('| {:1} | {:^4} | {:>4} | {:<3} |'.format(*row))
+    print(tabulate(
+        [['Hot', 'Temperature over +25C'], ['Cold', 'Temperature under -20C'], ['0DEG', 'Temperature exactly 0C'],
+         ['10DEG', 'Temperature exactly +10C'], ['20DEG', 'Temperature exactly +20C'], ['CLEAR', 'Clear skies'],
+         ['CLOUDS', 'Cloudy'], [' WINDY', ' Wind blows more than 10 m/s']], headers=['Weather', 'Description']))
 
     # The given weather conditions are:
     print("Your goal is to reach all of the airports having given weather conditions with given energy.")
@@ -202,8 +205,8 @@ while (True):
     # rounded temp_celcius could not be read as string
     # print(r)
 
-    remain = ["very hot", "windy", "freezing cold", "clear sky"]
-    available_Co2_in_kg = 10000
+    remain=["hot","cold","0deg","10deg","20deg","clear", "clouds","windy"]
+    available_Co2_in_kg = 20000
     print(remain)
 
     Co2_consumed_in_kg = 0
@@ -267,24 +270,44 @@ while (True):
             humidity = response["main"]["humidity"]
             wind = response["wind"]["speed"]
 
-            if (temp_celcius > 30):
+            if (temp_celcius > 25) and (("hot") in remain):
                 greet()
-                remain.remove("very hot")
+                remain.remove("hot")
                 print(f"Remaining goals: {remain}")
 
-            elif (temp_celcius < 0):
+            elif (temp_celcius < -20) and ("cold" in remain):
                 greet()
-                remain.remove("freezing cold")
+                remain.remove("cold")
                 print(f"Remaining goals: {remain}")
 
-            elif (wind > 10):
+            elif (temp_celcius == 0) and ("0deg" in remain):
+                greet()
+                remain.remove("0deg")
+                print(f"Remaining goals: {remain}")
+
+            elif (temp_celcius == 10) and ("10deg" in remain):
+                greet()
+                remain.remove("10deg")
+                print(f"Remaining goals: {remain}")
+
+            elif (temp_celcius == 20) and ("20deg" in remain):
+                greet()
+                remain.remove("20deg")
+                print(f"Remaining goals: {remain}")
+
+            elif (description == "clear sky") and ("clear" in remain):
+                greet()
+                remain.remove('clear')
+                print(f"Remaining goals: {remain}")
+
+            elif description == "few clouds" and ("clouds" in remain):
+                greet()
+                remain.remove("clouds")
+                print(f"Remaining goals: {remain}")
+
+            elif (wind > 10) and ("windy" in remain):
                 greet()
                 remain.remove("windy")
-                print(f"Remaining goals: {remain}")
-
-            elif description in remain:
-                greet()
-                remain.remove(description)
                 print(f"Remaining goals: {remain}")
 
             else:

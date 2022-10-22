@@ -14,7 +14,7 @@ def greet():
     global count
     count += 1
 
-    if count == 8:
+    if count == 4:
         print(f"\033[92m Yay! You won! \U0001f600 \U0001f600 \U0001f600")
         print("Play Again!")
 
@@ -167,6 +167,8 @@ while True:
     print("Please enter characters A-Z only")
 last_confirmation = input("Press Enter to start the game or any other characters to quit. ")
 
+given_weather_condition = [["  Very Hot  ", "    Windy       ", "Freezing Cold", "clear sky"],
+                           ["Weather>30°C", "Wind speed>10m/s", "Weather<0°C  ", "No clouds"]]
 
 while (True):
 
@@ -185,6 +187,7 @@ while (True):
          ['10DEG', 'Temperature exactly +10C'], ['20DEG', 'Temperature exactly +20C'], ['CLEAR', 'Clear skies'],
          ['CLOUDS', 'Cloudy'], [' WINDY', ' Wind blows more than 10 m/s']], headers=['Weather', 'Description']))
 
+    # The given weather conditions are:
     print("Your goal is to reach all of the airports having given weather conditions with given energy.")
 
     # Congratulations! One goal reached.
@@ -202,7 +205,7 @@ while (True):
     # rounded temp_celcius could not be read as string
     # print(r)
 
-    remain = ["Hot", "Cold", "0DEG", "10DEG", "20DEG", "CLEAR", "CLOUDS", "WINDY"]
+    remain=["hot","cold","0deg","10deg","20deg","clear", "clouds","windy"]
     available_Co2_in_kg = 20000
     print(remain)
 
@@ -230,7 +233,7 @@ while (True):
                 print("You cannot fly to your current destination!")
                 print("Choose another destination.")
                 continue
-            if count == 8:
+            if count == 4:
                 break
 
             print(f"Total energy consumed: {Co2_consumed_in_kg + 2000}")
@@ -267,50 +270,49 @@ while (True):
             humidity = response["main"]["humidity"]
             wind = response["wind"]["speed"]
 
-            if (temp_celcius > 25):
+            if (temp_celcius > 25) and (("hot") in remain):
                 greet()
-                remain.remove("Hot")
+                remain.remove("hot")
                 print(f"Remaining goals: {remain}")
 
-            elif (temp_celcius < -20):
+            elif (temp_celcius < -20) and ("cold" in remain):
                 greet()
-                remain.remove("Cold")
+                remain.remove("cold")
                 print(f"Remaining goals: {remain}")
 
-            elif (temp_celcius == 0):
+            elif (temp_celcius == 0) and ("0deg" in remain):
                 greet()
-                remain.remove("0DEG")
+                remain.remove("0deg")
                 print(f"Remaining goals: {remain}")
 
-            elif (temp_celcius == 10):
+            elif (temp_celcius == 10) and ("10deg" in remain):
                 greet()
-                remain.remove("10DEG")
+                remain.remove("10deg")
                 print(f"Remaining goals: {remain}")
 
-            elif (temp_celcius == 20):
+            elif (temp_celcius == 20) and ("20deg" in remain):
                 greet()
-                remain.remove("20DEG")
+                remain.remove("20deg")
                 print(f"Remaining goals: {remain}")
 
-            elif (description == "clear sky"):
+            elif (description == "clear sky") and ("clear" in remain):
                 greet()
-                remain.remove('ClEAR')
+                remain.remove('clear')
                 print(f"Remaining goals: {remain}")
 
-            elif description == "few clouds":
+            elif description == "few clouds" and ("clouds" in remain):
                 greet()
-                remain.remove("CLOUDS")
+                remain.remove("clouds")
                 print(f"Remaining goals: {remain}")
 
-            elif (wind > 10):
+            elif (wind > 10) and ("windy" in remain):
                 greet()
-                remain.remove("WINDY")
+                remain.remove("windy")
                 print(f"Remaining goals: {remain}")
 
             else:
                 print(f"Unfortunately! Goal not reached. \U0001F61E")
                 print(f"Remaining goals: {remain}")
-                break
 
             print(f"Temperature: {temp_celcius} degree celcius.")
             print(f"Feels like: {feels_like_celcius} degree celcius. ")
