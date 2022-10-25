@@ -190,7 +190,7 @@ while (True):
     list_of_user_input = ["efhk"]
     while co2_budget >0:
         try:
-            airport = input("Enter the name of the airport or ICAO code: ").lower()
+            airport = input("Enter  ICAO code of the airport: ").lower()
 
             list_of_user_input.append(airport)
 

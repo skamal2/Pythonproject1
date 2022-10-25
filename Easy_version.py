@@ -194,7 +194,7 @@ while (True):
 
         try:
 
-            airport = input("Enter the name of the airport or ICAO code: ").lower()
+            airport = input("Enter ICAO code of the airport: ").lower()
 
             list_of_user_input.append(airport)
 
