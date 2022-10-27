@@ -215,15 +215,10 @@ while (True):
                 continue
 
             # count is used for counting goals achieved, greet function is created for that.
-            total_energy_consumption = consumed_co2 + fuel_consumption_factor
-            if total_energy_consumption>=10000:
-                total_energy_consumption = 10000
-            print(f"Total energy consumed: {total_energy_consumption}")
+
+            print(f"Total energy consumed: {consumed_co2 + fuel_consumption_factor}")
             consumed_co2 = consumed_co2 + fuel_consumption_factor
-            remaining_energy = co2_budget - fuel_consumption_factor
-            if remaining_energy<=0:
-                remaining_energy=0
-            print(f"Remaining energy: {remaining_energy}")
+            print(f"Remaining energy: {co2_budget - fuel_consumption_factor}")
             co2_budget = co2_budget - fuel_consumption_factor
             #for informing about fuels to players.
 
@@ -319,7 +314,7 @@ while (True):
     if count == 8:
         break
 
-    if remaining_energy < (fuel_consumption_factor) : #does not work because of above while loop
+    if co2_budget < 0: #does not work because of above while loop
         print(f"\033[91mEnergy Over.\nYou Lost!\nTry Again!\U0001F917\U0001F917\U0001F917")
 
         break
