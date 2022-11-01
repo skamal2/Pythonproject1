@@ -10,59 +10,63 @@ This is done using the accerelate method.
 Each car is made to drive for one hour. This is done with the drive method.
 The race continues until one of the cars has advanced at least 10,000 kilometers.
 Finally, the properties of each car are printed out formatted into a clear table."""
-
+import random
+from tabulate import tabulate
 class Car:
 
 
-    def __init__(self, registration_number, maximum_speed, current_speed = 0, travelled_distance = 0):
+    def __init__(self, registration_number, maximum_speed):
         self.registration_number = registration_number
         self.maximum_speed = maximum_speed
-        self.current_speed = current_speed
-        self.travelled_distance = travelled_distance
+        self.current_speed = 0
+        self.travelled_distance = 0
+        self.car_status = {}
 
+    def info(self):
+        self.car_status = {
+            "Registration Number": self.registration_number,
+            "Maximum speed": self.maximum_speed,
+            "Current speed": self.current_speed,
+            "Travelled Distance": self.travelled_distance
+        }
     def accelerate(self,speed):
 
-        self.current_speed=self.current_speed+speed
+        self.current_speed += speed
 
+        if self.current_speed < 0:
+            self.current_speed = 0
+        elif self.current_speed > self.maximum_speed:
+            self.current_speed = self.maximum_speed
 
-        if self.current_speed > self.maximum_speed:
-            self.current_speed = self.current_speed-200
+        return self.current_speed
 
+    def emergency_brake(self):
+        self.current_speed -= 200
+        if self.current_speed < 0:
+            self.current_speed = 0
 
-        if self.current_speed<0:
-            self.current_speed=0
-
-        return
+        return self.current_speed
 
     def drive(self, driving_time):
-        self.travelled_distance = self.current_speed*driving_time
+        self.travelled_distance += self.current_speed*driving_time
+        return self.travelled_distance
 
-"""list_of_cars = {"toyota":"ABC-1",
-           "honda":"ABC-2",
-           "kia":"ABC-3",
-           "mercedes":"ABC-4",
-           "ferari":"ABC-5",
-           "suzuki":"ABC-6",
-           "megane":"ABC-7",
-           "lamborgini":"ABC-8",
-           "ford":"ABC-9",
-           "nissan":"ABC-10"}"""
+carlists=[]
+for i in range(1,11):
+    new_car = Car("ABC-" + str(i), random.randint(100, 200))
+    carlists.append(new_car)
 
-list_of_cars = ["toyota","honda","kia","ferari","suzuki","megane","lamborgini","ford","nissan"]
-toyota = Car("ABC-1", 200)
-honda = Car("ABC-2", 250)
-kia = Car("ABC-3", 220)
-mercedes = Car("ABC-4", 300)
-ferari = Car("ABC-5", 275)
-suzuki = Car("ABC-6", 300)
-megane = Car("ABC-7", 275)
-lamborgini = Car("ABC-8", 300)
-ford= Car("ABC-9", 250)
-nissan= Car("ABC-10",275 )
-current_speed=toyota.accelerate(50)
-travelled_distance = toyota.drive(4)
 
-print(
-    f"The registration number  of toyota is:{toyota.registration_number}."
-    f"It's maximum speed is {toyota.maximum_speed}km/h. It's current speed is {toyota.current_speed}km/h & "
-    f"It's travelled distance is {toyota.travelled_distance}km.")
+total_distance = 0
+while total_distance < 10000:
+    for i in range(10):
+        carlists[i].accelerate(random.randint(-10, 15))
+        carlists[i].drive(1)
+        carlists[i].info()
+        if total_distance< carlists[i].travelled_distance:
+            total_distance = carlists[i].travelled_distance
+
+result = []
+for i in range(10):
+    result.append(carlists[i].car_status)
+print(tabulate(result, headers="keys"))

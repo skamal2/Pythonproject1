@@ -24,10 +24,9 @@ class Car:
         self.current_speed=self.current_speed+speed
 
 
-        if self.current_speed > self.maximum_speed and self.current_speed<=342:
-            self.current_speed = self.current_speed-200
-        elif self.current_speed > 342:
-            self.current_speed = 142
+        if self.current_speed > self.maximum_speed:
+            self.current_speed =self.maximum_speed
+
 
         if self.current_speed<0:
             self.current_speed=0
@@ -52,6 +51,7 @@ toyota = Car("ABC-123", 142)
 current_speed=toyota.accelerate(50)
 current_speed=toyota.accelerate(30)
 current_speed=toyota.accelerate(100)
+current_speed = toyota.accelerate(-200)
 
 
 print(
