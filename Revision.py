@@ -298,3 +298,14 @@ numbers.append(5)
 numbers.append(10)
 numbers.append(3)
 print(numbers)"""
+##20
+
+user=int(input("How many items to be added? \n"))
+list=[]
+i=1
+while user>0:
+    ask=int(input(f"Item {i}: "))
+    list.append(ask)
+    user=user-1
+    i=i+1
+print(list)
