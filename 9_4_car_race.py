@@ -70,3 +70,4 @@ result = []
 for i in range(10):
     result.append(carlists[i].car_status)
 print(tabulate(result, headers="keys"))
+
