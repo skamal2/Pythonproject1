@@ -54,3 +54,4 @@ while not race.race_finished():
         race.print_status()
 print(f"The final result after {n} hours is: ")
 race.print_status()
+

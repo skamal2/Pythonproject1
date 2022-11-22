@@ -12,7 +12,7 @@ The race continues until one of the cars has advanced at least 10,000 kilometers
 Finally, the properties of each car are printed out formatted into a clear table."""
 import random
 from tabulate import tabulate
-class Car:
+"""class Car:
 
 
     def __init__(self, registration_number, maximum_speed):
@@ -69,5 +69,28 @@ while total_distance < 10000:
 result = []
 for i in range(10):
     result.append(carlists[i].car_status)
-print(tabulate(result, headers="keys"))
+print(tabulate(result, headers="keys"))"""
+
+
+class Car:
+    def __init__(self, registration_number, maximum_speed):
+        self.registration_number = registration_number
+        self.maximum_speed = maximum_speed
+        self.current_speed = 0
+        self.travelled_distance = 0
+
+    def accelerate(self,speed_change):
+        self.current_speed=self.current_speed + speed_change
+        if self.current_speed<0:
+            self.current_speed = 0
+        if self.current_speed>self.maximum_speed:
+            self.current_speed = self.maximum_speed
+        return True
+    def drive_hours(self, hours:float):
+        self.travelled_distance=self.current_speed*hours
+        return self.travelled_distance
+car_list=[]
+for i in range(1,11):
+    newcar = Car("ABC-" + str(i), random.randint(100, 200))
+    car_list.append(newcar)
 

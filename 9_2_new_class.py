@@ -9,7 +9,7 @@ The travelled distance does not have to be updated yet."""
 
 
 
-class Car:
+"""class Car:
 
 
     def __init__(self, registration_number, maximum_speed, current_speed = 0, travelled_distance = 0):
@@ -31,7 +31,7 @@ class Car:
         if self.current_speed<0:
             self.current_speed=0
 
-        return
+        return"""
 """Another method:
  def accelerate(self,speed):
 
@@ -44,8 +44,7 @@ class Car:
             self.current_speed = 142
         if self.current_speed<0:
             self.current_speed=self.current_speed-self.current_speed
-
-"""
+            
 
 toyota = Car("ABC-123", 142)
 current_speed=toyota.accelerate(50)
@@ -57,4 +56,33 @@ current_speed = toyota.accelerate(-200)
 print(
     f"The registration number  of toyota is:{toyota.registration_number}."
     f"It's maximum speed is {toyota.maximum_speed}. It's current speed is {toyota.current_speed} & "
-    f"It's travelled distance is {toyota.travelled_distance}.")
+    f"It's travelled distance is {toyota.travelled_distance}.")"""
+
+
+
+###
+class Car:
+    def __init__(self, registration_number, maximum_speed):
+        self.registration_number = registration_number
+        self.maximum_speed = maximum_speed
+        self.current_speed = 0
+        self.travelled_distance = 0
+
+    def accelerate(self,speed_change):
+        self.current_speed=self.current_speed + speed_change
+        if self.current_speed<0:
+            self.current_speed = 0
+        if self.current_speed>self.maximum_speed:
+            self.current_speed = self.maximum_speed
+        return
+
+newcar = Car("ABC-123", 142)
+current_speed=newcar.accelerate(30)
+print(f"The current speed of the car is {newcar.current_speed}")
+current_speed=newcar.accelerate(50)
+print(f"The current speed of the car is {newcar.current_speed}")
+current_speed=newcar.accelerate(70)
+print(f"The current speed of the car is {newcar.current_speed}")
+current_speed=newcar.accelerate(-200)
+print(f"The current speed of the car is {newcar.current_speed}")
+
