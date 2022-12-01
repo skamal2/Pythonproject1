@@ -259,7 +259,7 @@ while (True):
             wind = response["wind"]["speed"]
 
 
-            if (temp_celcius > 25) and (("HOT") in remain):
+            if (temp_celcius > 20) and (("HOT") in remain):
                 greet()
                 remain.remove("HOT")
                 print(f"Remaining goals: {remain}")
